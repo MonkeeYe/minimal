@@ -1,8 +1,449 @@
 ---
 layout: default
-title: 你好，世界
+title: 古典算法与机器学习算法在时序预测问题的表现对比
 ---
 
-<h2>{{ page.title }}</h2>
-<p>我的第一篇文章</p>
-<p>{{ page.date | date_to_string }}</p>
+
+<!DOCTYPE html><html><head>
+      <title>source_web</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+      
+
+      
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="%E5%8F%A4%E5%85%B8%E7%AE%97%E6%B3%95%E4%B8%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%9C%A8%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E9%97%AE%E9%A2%98%E7%9A%84%E8%A1%A8%E7%8E%B0%E5%AF%B9%E6%AF%94">&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x4E0E;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x5728;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x7684;&#x8868;&#x73B0;&#x5BF9;&#x6BD4;</h1>
+
+<p>The original version by Jason Brownlee <strong><a href="https://machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/">link</a></strong> | Translated and Editted by MonkeeYe</p>
+<hr>
+<p>&#x5BFC;&#x8BFB;&#xFF1A;blog&#x539F;&#x6587;&#x4FE1;&#x606F;&#x91CF;&#x4E0D;&#x5927;&#xFF0C;&#x5E72;&#x8D27;&#x4E0D;&#x591A;&#xFF0C;&#x9605;&#x8BFB;&#x65F6;&#x91CD;&#x70B9;&#x4E3B;&#x8981;&#x96C6;&#x4E2D;&#x5728;&#x540D;&#x8BCD;&#x4E86;&#x89E3;&#x4E0A;&#xFF0C;&#x53EF;&#x4EE5;&#x4E86;&#x89E3;&#x4E00;&#x4E9B;&#x53E4;&#x5178;&#x65B9;&#x6CD5;&#x7684;&#x540D;&#x79F0;&#x3002;&#x5F15;&#x6587;<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>&#x548C;<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x4F5C;&#x8005;&#xFF0C;&#x4E5F;&#x662F;&#x90A3;&#x4E2A;&#x5927;&#x8D5B;&#x7684;&#x51A0;&#x540D;&#x8005;&#xFF0C;&#x600E;&#x4E48;&#x611F;&#x89C9;&#x6709;&#x70B9;&#x738B;&#x5A46;&#x5356;&#x74DC;&#x3002;&#x3002;&#x3002;&#x5F15;&#x6587;<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>&#x8BB2;&#x7684;&#x662F;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x65B9;&#x6CD5;&#x7684;&#x5BF9;&#x6BD4;&#x3002;<br>
+&#x603B;&#x7684;&#x6765;&#x8BF4;&#xFF0C;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x6709;&#x5F88;&#x591A;&#x6709;&#x610F;&#x601D;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x4E5F;&#x4F53;&#x73B0;&#x4E86;&#x524D;&#x8F88;&#x4EEC;&#x5F88;&#x591A;&#x8FF7;&#x4EBA;&#x7684;&#x54F2;&#x5B66;&#x601D;&#x60F3;&#x3002;&#x65F6;&#x5E8F;&#x5206;&#x6790;&#x662F;&#x5404;&#x884C;&#x5404;&#x4E1A;&#x90FD;&#x4F1A;&#x7528;&#x5230;&#x7684;&#x5DE5;&#x5177;&#xFF0C;&#x67E5;&#x9605;&#x8D44;&#x6599;&#x65F6;&#x53D1;&#x73B0;&#x6587;&#x4E2D;&#x4ECB;&#x7ECD;&#x7684;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x591A;&#x7528;&#x4E8E;&#x5DE5;&#x4E1A;&#x754C;&#x3001;&#x91D1;&#x878D;&#x754C;&#xFF0C;&#x89E3;&#x51B3;&#x7684;&#x95EE;&#x9898;&#x76F8;&#x5BF9;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF0C;&#x5168;&#x662F;&#x5355;&#x53D8;&#x91CF;&#x6A21;&#x578B;&#xFF0C;&#x5C5E;&#x4E8E;<strong>&#x8D8B;&#x52BF;&#x9884;&#x6D4B;&#x6A21;&#x578B;</strong>&#xFF0C;&#x5BF9;&#x4E8E;&#x9AD8;&#x7EF4;&#x6570;&#x636E;&#x80AF;&#x5B9A;&#x65E0;&#x6CD5;&#x80DC;&#x4EFB;&#x3002;&#x9AD8;&#x7EF4;&#x6570;&#x636E;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x80AF;&#x5B9A;&#x662F;ML&#x7B97;&#x6CD5;&#xFF0C;&#x4EBA;&#x5F88;&#x96BE;&#x7406;&#x89E3;&#x8D85;&#x8FC7;3&#x4E2A;&#x7EF4;&#x5EA6;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x66F4;&#x522B;&#x8BF4;&#x627E;&#x8054;&#x7CFB;&#x548C;&#x9884;&#x6D4B;&#x4E86;&#x3002;<br>
+&#x4E2A;&#x4EBA;&#x8BA4;&#x4E3A;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x5BF9;&#x4F7F;&#x7528;&#x8005;&#x7684;&#x4E13;&#x4E1A;&#x77E5;&#x8BC6;&#x8981;&#x6C42;&#x66F4;&#x9AD8;&#xFF0C;&#x56E0;&#x4E3A;&#x53C2;&#x6570;&#x7684;&#x9009;&#x53D6;&#x662F;&#x9884;&#x6D4B;&#x7684;&#x5173;&#x952E;&#xFF0C;&#x53EA;&#x6709;&#x771F;&#x6B63;&#x4E86;&#x89E3;&#x4F60;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x624D;&#x80FD;&#x5F97;&#x5230;&#x597D;&#x7684;&#x7ED3;&#x679C;&#x3002;&#x800C;ML&#x65B9;&#x6CD5;(Machine Learning)&#x7684;&#x4F18;&#x52BF;&#x5728;&#x4E8E;&#x5F3A;&#x5927;&#x7B97;&#x529B;&#x548C;&#x5176;&#x666E;&#x9002;&#x6027;&#xFF0C;&#x5373;&#x4FBF;&#x6CA1;&#x6709;&#x5F88;&#x5F3A;&#x7684;&#x4E13;&#x4E1A;&#x77E5;&#x8BC6;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x53C2;&#x6570;&#x641C;&#x7D22;&#x7B49;&#x65B9;&#x5F0F;&#x5F97;&#x5230;&#x4E00;&#x4E2A;&#x8F83;&#x597D;&#x7684;&#x7ED3;&#x679C;&#x3002;<br>
+&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x7684;&#x4F18;&#x70B9;&#x662F;&#x5F3A;&#x8FEB;&#x4F60;&#x53BB;&#x601D;&#x8003;&#x6570;&#x636E;&#x672C;&#x8EAB;&#xFF0C;&#x53BB;&#x5B66;&#x4E60;&#x9886;&#x57DF;&#x77E5;&#x8BC6;&#xFF0C;&#x53BB;&#x601D;&#x8003;&#xFF0C;&#x7F3A;&#x70B9;&#x5C31;&#x662F;&#x5DF2;&#x7ECF;&#x4E0D;&#x9002;&#x5408;&#x8FD9;&#x4E2A;&#x65F6;&#x4EE3;&#x4E86;&#xFF0C;&#x5982;&#x6587;&#x4E2D;&#x63D0;&#x5230;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x4F5C;&#x4E3A;baseline&#x6765;&#x6D4B;&#x8BD5;&#x65B0;&#x7B97;&#x6CD5;&#xFF0C;&#x4F46;&#x6CE8;&#x5B9A;&#x8981;&#x968F;&#x7740;&#x65F6;&#x4EE3;&#x7684;&#x524D;&#x8FDB;&#x9010;&#x6E10;&#x88AB;&#x53D6;&#x4EE3;&#xFF0C;&#x6216;&#x662F;&#x4EE5;&#x65B0;&#x7684;&#x65B9;&#x5F0F;&#x518D;&#x5448;&#x73B0;&#x3002;<br>
+ML&#x7B97;&#x6CD5;&#x662F;&#x65F6;&#x4EE3;&#x7684;&#x4EA7;&#x7269;&#xFF0C;&#x7B26;&#x5408;&#x76EE;&#x524D;&#x8FD9;&#x4E2A;&#x65F6;&#x4EE3;&#x7684;&#x751F;&#x4EA7;&#x529B;&#xFF0C;&#x7F3A;&#x70B9;&#x662F;&#x5BB9;&#x6613;&#x8BA9;&#x4EBA;&#x53D8;&#x6210;&#x8C03;&#x53C2;&#x4FA0;&#xFF0C;&#x4ECE;&#x800C;&#x5FFD;&#x7565;&#x4E86;&#x6570;&#x636E;&#x672C;&#x8EAB;&#x7684;&#x4E00;&#x4E9B;&#x7EDF;&#x8BA1;&#x5B66;&#x7279;&#x5F81;&#x3002;<br>
+&#x6B8A;&#x9014;&#x540C;&#x5F52;&#xFF0C;&#x5982;&#x679C;&#x771F;&#x7684;&#x60F3;&#x900F;&#x5F7B;&#x5730;&#x7814;&#x7A76;&#x67D0;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x6700;&#x7EC8;&#x4E24;&#x65B9;&#x9762;&#x80AF;&#x5B9A;&#x90FD;&#x4F1A;&#x6D89;&#x53CA;&#x5230;&#xFF0C;&#x5176;&#x80CC;&#x540E;&#x7684;&#x7EDF;&#x8BA1;&#x5B66;&#x77E5;&#x8BC6;&#x662F;&#x76F8;&#x901A;&#x7684;&#xFF0C;&#x4E00;&#x5B9A;&#x8981;&#x9488;&#x5BF9;&#x4F60;&#x7684;&#x5177;&#x4F53;&#x95EE;&#x9898;&#x53BB;&#x5206;&#x6790;&#x3001;&#x601D;&#x8003;&#x3002;</p>
+<p><strong>&#x8FD9;&#x4E16;&#x4E0A;&#x672C;&#x6CA1;&#x6709;&#x4EC0;&#x4E48;&#x597D;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x9002;&#x5408;&#x4F60;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x5C31;&#x662F;&#x597D;&#x7684;&#x65B9;&#x6CD5;&#x3002;</strong></p>
+<hr>
+<p>&#x8D8A;&#x6765;&#x8D8A;&#x591A;&#x7684;&#x4EBA;&#x8BA4;&#x4E3A;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x662F;&#x89E3;&#x51B3;&#x6240;&#x6709;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x7684;&#x7EC8;&#x6781;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3002;&#x4F46;&#x6700;&#x8FD1;&#x7684;&#x4E00;&#x9879;&#x7814;&#x7A76;&#x5BF9;&#x6BD4;&#x4E86;&#x51E0;&#x79CD;&#x5177;&#x6709;&#x4EE3;&#x8868;&#x6027;&#x7684;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x3001;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x3001;&#x6DF1;&#x5EA6;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#xFF0C;&#x6D4B;&#x8BD5;&#x4E86;&#x5B83;&#x4EEC;&#x5728;&#x4F17;&#x591A;&#x8FE5;&#x5F02;&#x7684;&#x5355;&#x53D8;&#x91CF;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x4E0A;&#x7684;&#x8868;&#x73B0;&#x3002;<strong>&#x7ED3;&#x679C;&#x8868;&#x660E;&#xFF1A;&#x7EBF;&#x6027;&#x65B9;&#x6CD5;&#x3001;&#x6307;&#x6570;&#x5E73;&#x6ED1;&#x6CD5;&#x7B49;&#x539F;&#x7406;&#x7B80;&#x5355;&#x7684;&#x53E4;&#x5178;&#x65B9;&#x6CD5;&#x8868;&#x73B0;&#x51FA;&#x4E86;&#x66F4;&#x597D;&#x7684;&#x6027;&#x80FD;&#xFF0C;&#x4F18;&#x4E8E;&#x51B3;&#x7B56;&#x6811;&#x3001;&#x591A;&#x5C42;&#x611F;&#x77E5;&#x673A;&#x3001;&#x957F;&#x77ED;&#x65F6;&#x8BB0;&#x5FC6;&#x7F51;&#x7EDC;&#x7B49;&#x590D;&#x6742;&#x7CBE;&#x7EC6;&#x7684;&#x65B0;&#x65B9;&#x6CD5;</strong>&#x3002;&#x8FD9;&#x4E00;&#x53D1;&#x73B0;&#x5F3A;&#x8C03;&#x4E86;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x7684;&#x91CD;&#x8981;&#x6027;&#xFF0C;&#x63D0;&#x51FA;&#x5E94;&#x5F53;&#x628A;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x7684;&#x7ED3;&#x679C;&#x4F5C;&#x4E3A;&#x8BC4;&#x4EF7;&#x65B0;&#x7B97;&#x6CD5;&#x7684;&#x57FA;&#x7840;&#xFF0C;&#x786E;&#x4FDD;&#x65B0;&#x7B97;&#x6CD5;&#x771F;&#x7684;&#x5728;&#x589E;&#x52A0;&#x9884;&#x62A5;&#x590D;&#x6742;&#x5EA6;&#x7684;&#x540C;&#x65F6;&#x63D0;&#x9AD8;&#x4E86;&#x9884;&#x62A5;&#x6548;&#x679C;&#x3002;</p>
+<p>Spyros Makridakis&#x4E8E;2018&#x5E74;&#x53D1;&#x8868;&#x7684;&#x8BBA;&#x6587;<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup>&#x5BF9;&#x6BD4;&#x4E86;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x4E0E;&#x73B0;&#x4EE3;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x5728;&#x771F;&#x5B9E;&#x4E16;&#x754C;&#x6570;&#x636E;&#x4E0A;&#x7684;&#x8868;&#x73B0;&#xFF0C;&#x8BE5;&#x8BBA;&#x6587;&#x5206;&#x4E3A;7&#x4E2A;&#x90E8;&#x5206;&#xFF1A;</p>
+<ol>
+<li>&#x7814;&#x7A76;&#x52A8;&#x673A;</li>
+<li>&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x6570;&#x636E;&#x96C6;</li>
+<li>&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x9884;&#x6D4B;&#x65B9;&#x6CD5;</li>
+<li>&#x6570;&#x636E;&#x51C6;&#x5907;</li>
+<li>&#x5355;&#x6B65;&#x9884;&#x6D4B;&#x8BB0;&#x8FC7;</li>
+<li>&#x591A;&#x6B65;&#x9884;&#x6D4B;&#x7ED3;&#x679C;</li>
+<li>&#x7ED3;&#x679C;&#x5206;&#x6790;</li>
+</ol>
+<ul>
+<li>
+<h3>&#x7814;&#x7A76;&#x52A8;&#x673A;</h3>
+</li>
+</ul>
+<p>&#x8BE5;&#x7814;&#x7A76;&#x7684;&#x76EE;&#x6807;&#x662F;&#x6E05;&#x695A;&#x5730;&#x5C55;&#x793A;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x548C;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;(ML&#x7B97;&#x6CD5;)&#x5728;&#x5927;&#x91CF;&#x7279;&#x5F81;&#x8FE5;&#x5F02;&#x7684;&#x65F6;&#x5E8F;&#x95EE;&#x9898;&#x4E0A;&#x7684;&#x9884;&#x6D4B;&#x80FD;&#x529B;&#xFF0C;&#x662F;&#x9488;&#x5BF9;&#x5927;&#x91CF;&#x76F2;&#x76EE;&#x5D07;&#x62DC;ML&#x7B97;&#x6CD5;&#x6587;&#x7AE0;&#x7684;&#x56DE;&#x5E94;&#xFF0C;&#x4F5C;&#x8005;&#x8BA4;&#x4E3A;&#x8FD9;&#x4E9B;&#x6587;&#x7AE0;&#x4F7F;&#x7528;&#x7684;&#x6570;&#x636E;&#x6709;&#x9650;&#xFF0C;&#x5F88;&#x96BE;&#x8BF4;&#x660E;ML&#x7B97;&#x6CD5;&#x4F18;&#x52BF;&#x7684;&#x666E;&#x904D;&#x6027;&#x3002;&#x4F5C;&#x8005;&#x5728;&#x6587;&#x4E2D;&#x6307;&#x51FA;&#xFF1A;</p>
+<blockquote>
+<p>&#x4ECE;&#x5B57;&#x9762;&#x4E0A;&#x770B;&#xFF0C;&#x6570;&#x767E;&#x7BC7;&#x8BBA;&#x6587;&#x90FD;&#x63D0;&#x51FA;&#x4E86;&#x65B0;&#x7684;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#xFF0C;&#x8BBA;&#x8FF0;&#x4E86;&#x5B83;&#x4EEC;&#x5728;&#x65B9;&#x6CD5;&#x4E0A;&#x7684;&#x8FDB;&#x6B65;&#x548C;&#x51C6;&#x786E;&#x6027;&#x4E0A;&#x7684;&#x63D0;&#x9AD8;&#x3002;&#x7136;&#x800C;&#xFF0C;&#x5173;&#x4E8E;&#x5B83;&#x4EEC;&#x4F5C;&#x4E3A;&#x901A;&#x7528;&#x9884;&#x6D4B;&#x5DE5;&#x5177;&#x7684;&#x5BA2;&#x89C2;&#x8BC1;&#x636E;&#x5374;&#x5341;&#x5206;&#x6709;&#x9650;&#x3002;</p>
+</blockquote>
+<p>&#x5BF9;&#x4E8E;&#x8FD9;&#x4E9B;&#x6587;&#x7AE0;&#x6700;&#x540E;&#x5F97;&#x51FA;&#x7684;&#x7ED3;&#x8BBA;&#xFF0C;&#x4F5C;&#x8005;&#x63D0;&#x51FA;&#x4E86;3&#x70B9;&#x8D28;&#x7591;&#xFF1A;</p>
+<ul>
+<li>&#x9996;&#x5148;&#xFF0C;&#x8FD9;&#x4E9B;&#x6587;&#x7AE0;&#x90FD;&#x662F;&#x4ECE;&#x5C11;&#x6570;&#xFF0C;&#x751A;&#x81F3;&#x662F;&#x5355;&#x4E2A;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x5F97;&#x51FA;&#x7684;&#x7ED3;&#x8BBA;&#xFF0C;&#x5176;&#x7ED3;&#x679C;&#x7684;&#x7EDF;&#x8BA1;&#x5B66;&#x610F;&#x4E49;&#x548C;&#x65B9;&#x6CD5;&#x672C;&#x8EAB;&#x7684;&#x6CDB;&#x5316;&#x6027;&#x5C1A;&#x5F85;&#x8BBA;&#x8BC1;&#x3002;</li>
+<li>&#x5176;&#x6B21;&#xFF0C;&#x7EDD;&#x5927;&#x591A;&#x6570;&#x65B9;&#x6CD5;&#x90FD;&#x662F;&#x7ACB;&#x8DB3;&#x4E8E;&#x77ED;&#x65F6;&#x9884;&#x62A5;&#xFF0C;&#x51E0;&#x4E4E;&#x5168;&#x90FD;&#x662F;&#x5355;&#x6B65;&#x9884;&#x62A5;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E2D;&#x3001;&#x957F;&#x671F;&#x7684;&#x591A;&#x6B65;&#x9884;&#x62A5;&#x8003;&#x8651;&#x592A;&#x5C11;&#x3002;</li>
+<li>&#x6700;&#x540E;&#xFF0C;&#x8FD9;&#x4E9B;&#x6587;&#x7AE0;&#x4EC5;&#x5355;&#x65B9;&#x9762;&#x8BBA;&#x8BC1;&#x4E86;ML&#x7B97;&#x6CD5;&#x7684;&#x4F18;&#x52BF;&#xFF0C;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x57FA;&#x51C6;&#x6D4B;&#x8BD5;&#x6765;&#x5BF9;&#x6BD4;ML&#x65B9;&#x6CD5;&#x548C;&#x53E4;&#x5178;&#x65B9;&#x6CD5;&#x7684;&#x51C6;&#x786E;&#x6027;&#x3002;</li>
+</ul>
+<p>&#x4E3A;&#x4E86;&#x56DE;&#x7B54;&#x8FD9;&#x4E9B;&#x7591;&#x95EE;&#xFF0C;Spyros&#x5BF9;&#x6BD4;&#x4E86;8&#x79CD;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x548C;10&#x79CD;ML&#x65B9;&#x6CD5;&#xFF0C;&#x9009;&#x53D6;&#x4E86;1045&#x4E2A;&#x6708;&#x5EA6;&#x6570;&#x636E;&#x96C6;&#xFF0C;&#x5206;&#x522B;&#x8FDB;&#x884C;&#x4E86;&#x5355;&#x6B65;&#x548C;&#x591A;&#x6B65;&#x9884;&#x6D4B;&#x68C0;&#x9A8C;&#x3002;&#x867D;&#x7136;&#x8BBA;&#x6587;&#x6700;&#x540E;&#x5BF9;&#x4E8E;&#x65B9;&#x6CD5;&#x7684;&#x597D;&#x574F;&#x8BC4;&#x4EF7;&#x5E76;&#x4E0D;&#x662F;&#x9002;&#x5408;&#x6240;&#x6709;&#x60C5;&#x51B5;&#xFF0C;&#x4F46;&#x5927;&#x91CF;&#x7684;&#x7ED3;&#x679C;&#x6570;&#x636E;&#x786E;&#x5B9E;&#x5177;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x53C2;&#x8003;&#x4EF7;&#x503C;&#x3002;</p>
+<ul>
+<li>
+<h3>&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x6570;&#x636E;&#x96C6;</h3>
+</li>
+</ul>
+<p>&#x6587;&#x7AE0;<sup class="footnote-ref"><a href="#fn1" id="fnref1:2">[1:2]</a></sup>&#x4E2D;&#x4F7F;&#x7528;&#x7684;&#x662F;&#x7B2C;&#x4E09;&#x5C4A;Makridakis&#x5927;&#x8D5B;<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>&#x7684;&#x90E8;&#x5206;&#x6570;&#x636E;&#x96C6;&#x8FDB;&#x884C;&#x8BC4;&#x4F30;&#x7684;&#xFF0C;&#x5171;&#x9009;&#x53D6;&#x4E86;1045&#x4E2A;&#x6570;&#x636E;&#x96C6;&#xFF0C;&#x65F6;&#x95F4;&#x5206;&#x8FA8;&#x7387;&#x5747;&#x4E3A;&#x6708;&#x95F4;&#x9694;&#x3002;M3&#x5927;&#x8D5B;&#x4E2D;&#x7528;&#x5230;&#x7684;&#x6570;&#x636E;&#x96C6;&#x6765;&#x6E90;&#x4E8E;&#x5DE5;&#x4E1A;&#x3001;&#x91D1;&#x878D;&#x3001;&#x793E;&#x4F1A;&#x5B66;&#x7B49;&#x9886;&#x57DF;&#x754C;&#xFF0C;&#x5747;&#x4E3A;&#x771F;&#x5B9E;&#x4E16;&#x754C;&#x6570;&#x636E;&#xFF0C;M3&#x6BD4;&#x8D5B;&#x7684;&#x6570;&#x636E;&#x53CA;&#x6570;&#x91CF;&#x4E3A;3003&#x4E2A;&#xFF0C;&#x65F6;&#x95F4;&#x5206;&#x8FA8;&#x7387;&#x4E0A;&#x5305;&#x62EC;&#x4E86;&#x5C0F;&#x65F6;&#x95F4;&#x9694;&#x3001;&#x6708;&#x95F4;&#x9694;&#x3001;&#x5E74;&#x95F4;&#x9694;&#x7B49;&#x3002;<br>
+&#x4E0B;&#x9762;&#x7684;&#x8868;&#x683C;&#x63CF;&#x8FF0;&#x4E86;&#x8FD9;3003&#x4E2A;&#x6570;&#x636E;&#x96C6;&#x7684;&#x884C;&#x4E1A;&#x548C;&#x65F6;&#x95F4;&#x5206;&#x8FA8;&#x7387;&#x60C5;&#x51B5;&#x3002;<br>
+<img src="assets/markdown-img-paste-20191101113816867.png" alt></p>
+<p>M3&#x5927;&#x8D5B;&#x4E13;&#x6CE8;&#x4E8E;&#x5BFB;&#x627E;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x4E2D;&#x7684;&#x4F18;&#x79C0;&#x7B97;&#x6CD5;&#xFF0C;2000&#x5E74;&#x7684;&#x4E00;&#x7BC7;&#x8BBA;&#x6587;<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup>&#x8BB0;&#x5F55;&#x4E86;M3&#x6BD4;&#x8D5B;&#x7684;&#x7ED3;&#x679C;&#xFF0C;&#x8BBA;&#x8FF0;&#x5728;&#x5355;&#x53D8;&#x91CF;&#x65F6;&#x5E8F;&#x95EE;&#x9898;&#x7684;&#x9884;&#x6D4B;&#x4E0A;&#xFF0C;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x6CD5;&#x4F18;&#x4E8E;&#x590D;&#x6742;&#x7684;&#x65B9;&#x6CD5;&#xFF08;&#x5305;&#x62EC;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#xFF09;&#xFF0C;&#x8BBA;&#x6587;<sup class="footnote-ref"><a href="#fn2" id="fnref2:2">[2:2]</a></sup>&#x4E2D;&#x8FD9;&#x6837;&#x5199;&#x5230;:</p>
+<blockquote>
+<p>&#x901A;&#x8FC7;&#x672C;&#x6587;&#x3001;&#x524D;&#x4E24;&#x5C4A;M3&#x7ADE;&#x8D5B;&#x548C;&#x8BB8;&#x591A;&#x5176;&#x4ED6;&#x7814;&#x7A76;&#x8BC1;&#x660E;&#xFF0C;&#x65B0;&#x7684;ML&#x6A21;&#x578B;&#x90FD;&#x662F;&#x57FA;&#x4E8E;&#x8BE6;&#x5C3D;&#x7684;&#x7406;&#x8BBA;&#x6784;&#x5EFA;&#x548C;&#x590D;&#x6742;&#x7684;&#x65B9;&#x6CD5;&#x6784;&#x67B6;&#xFF0C;&#x5B83;&#x4EEC;&#x80FD;&#x591F;&#x66F4;&#x597D;&#x5730;&#x5C06;&#x7EDF;&#x8BA1;&#x6A21;&#x578B;&#x4E0E;&#x7279;&#x5B9A;&#x95EE;&#x9898;&#x7684;&#x5386;&#x53F2;&#x6570;&#x636E;&#x7ED3;&#x5408;&#x8D77;&#x6765;&#xFF0C;&#x4F46;&#x5728;&#x540E;&#x7EED;&#x6570;&#x636E;&#x7684;&#x9884;&#x6D4B;&#x6548;&#x679C;&#x4E0A;&#xFF0C;&#x8FD9;&#x4E9B;&#x65B9;&#x6CD5;&#x5E76;&#x6CA1;&#x6709;&#x8868;&#x73B0;&#x51FA;&#x66F4;&#x591A;&#x7684;&#x4F18;&#x52BF;&#x3002;</p>
+</blockquote>
+<ul>
+<li>
+<h3>&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x9884;&#x6D4B;&#x65B9;&#x6CD5;</h3>
+</li>
+</ul>
+<p>&#x6587;&#x7AE0;<sup class="footnote-ref"><a href="#fn1" id="fnref1:3">[1:3]</a></sup>&#x5171;&#x5BF9;&#x6BD4;&#x4E86;8&#x79CD;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x548C;10&#x79CD;ML&#x7B97;&#x6CD5;&#xFF0C;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x5305;&#x62EC;&#xFF1A;</p>
+<ol>
+<li>Naive 2&#xFF0C;&#x5B9E;&#x8D28;&#x4E0A;&#x662F;&#x4E00;&#x79CD;&#x5468;&#x671F;&#x81EA;&#x9002;&#x5E94;&#x7684;&#x968F;&#x673A;&#x8D70;&#x52A8;&#x6A21;&#x578B;(Naive 2)</li>
+<li>&#x5355;&#x6307;&#x6570;&#x5E73;&#x6ED1;(SES, Single Exponential Smoothing)</li>
+<li>Holt&#x6A21;&#x578B;</li>
+<li>&#x963B;&#x5C3C;&#x6307;&#x6570;&#x5E73;&#x6ED1;(DES, Damped Exponential Smoothing)</li>
+<li>&#x7EC4;&#x5408;&#x6CD5;(Average of SES, Holt, and DES)</li>
+<li>Theta&#x7B97;&#x6CD5;(Theta Method)</li>
+<li>&#x5DEE;&#x5206;&#x6574;&#x5408;&#x6ED1;&#x52A8;&#x5E73;&#x5747;&#x81EA;&#x56DE;&#x5F52;&#x6A21;&#x578B;(ARIMA, Autoregressive Integrated Moving Average Model)</li>
+<li>ETS&#x6A21;&#x578B;(ETS, Error Trend Seasonality)</li>
+</ol>
+<p>&#x5176;&#x4E2D;&#x524D;8&#x79CD;ML&#x7B97;&#x6CD5;&#x6765;&#x81EA;2010&#x5E74;&#x7684;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup>&#xFF0C;&#x6587;&#x7AE0;<sup class="footnote-ref"><a href="#fn1" id="fnref1:4">[1:4]</a></sup>&#x8BD5;&#x56FE;&#x91CD;&#x73B0;&#x8FD9;&#x4E9B;&#x7B97;&#x6CD5;:</p>
+<ol>
+<li>&#x591A;&#x5C42;&#x611F;&#x77E5;&#x673A;(MLP, Multi-Layer Perceotron)</li>
+<li>&#x8D1D;&#x53F6;&#x65AF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;(BNN, Bayesian Neutral Network)</li>
+<li>&#x5F84;&#x5411;&#x57FA;&#x51FD;&#x6570;(RBF, Radial Basis Functions)</li>
+<li>&#x5E7F;&#x4E49;&#x56DE;&#x5F52;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;(GRNN, Generalized Regression Neutral Networks) / &#x4E5F;&#x53EB;Kernel Regression</li>
+<li>K&#x8FD1;&#x90BB;&#x56DE;&#x5F52;(KNN, K-Nearest Neighbor Regression)</li>
+<li>CART&#x56DE;&#x5F52;&#x6811;(CART, CART Regression Trees)</li>
+<li>&#x652F;&#x6301;&#x5411;&#x91CF;&#x673A;&#x56DE;&#x5F52;(SVR, Support Vector Regression)</li>
+<li>&#x9AD8;&#x65AF;&#x8FC7;&#x7A0B;(GP, Gaussian Processes)</li>
+</ol>
+<p>&#x6700;&#x540E;2&#x79CD;ML&#x7B97;&#x6CD5;&#x5C5E;&#x4E8E;&#x73B0;&#x4EE3;&#x67B6;&#x6784;&#x4E0B;&#x7684;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x6A21;&#x578B;&#xFF1A;</p>
+<ol>
+<li><strong>&#x65F6;&#x95F4;&#x5FAA;&#x73AF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;(RNN, Recurrent Neutral Network)</strong></li>
+<li><strong>&#x957F;&#x77ED;&#x65F6;&#x8BB0;&#x5FC6;&#x7F51;&#x7EDC;(LSTM, Long-short Term Memory)</strong></li>
+</ol>
+<ul>
+<li>
+<h3>&#x6570;&#x636E;&#x51C6;&#x5907;</h3>
+</li>
+</ul>
+<p>&#x6570;&#x636E;&#x9884;&#x5907;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x81EA;&#x6587;&#x7AE0;<sup class="footnote-ref"><a href="#fn3" id="fnref3:2">[3:2]</a></sup>&#xFF1A;&#x6BCF;&#x4E00;&#x7EC4;&#x6570;&#x636E;&#x90FD;&#x8FDB;&#x884C;&#x4E86;&#x5E42;&#x53D8;&#x6362;&#x3001;&#x53BB;&#x5468;&#x671F;&#x3001;&#x53BB;&#x8D8B;&#x52BF;&#x3002;&#x5E76;&#x4E14;&#xFF0C;&#x53D7;&#x5230;&#x8FD9;&#x4E9B;&#x5904;&#x7406;&#x65B9;&#x5F0F;&#x7684;&#x542F;&#x53D1;&#xFF0C;&#x4F5C;&#x8005;&#x5728;&#x4F7F;&#x7528;&#x591A;&#x5C42;&#x611F;&#x77E5;&#x673A;&#x524D;&#xFF0C;&#x91C7;&#x7528;&#x4E86;5&#x79CD;&#x4E0D;&#x540C;&#x7684;&#x6570;&#x636E;&#x9884;&#x5904;&#x7406;&#x65B9;&#x5F0F;:</p>
+<ul>
+<li>&#x4E0D;&#x4F5C;&#x5904;&#x7406;</li>
+<li>Box-Cox&#x5E42;&#x53D8;&#x6362;</li>
+<li>&#x53BB;&#x5468;&#x671F;&#x6027;</li>
+<li>&#x53BB;&#x8D8B;&#x52BF;&#x6027;</li>
+<li>3&#x79CD;&#x53D8;&#x6362;&#x7684;&#x5408;&#x6210;(&#x6307;&#x6570;&#xFF0C;&#x53BB;&#x5468;&#x671F;&#xFF0C;&#x53BB;&#x8D8B;&#x52BF;)</li>
+</ul>
+<p>&#x7ED3;&#x679C;&#x8868;&#x660E;&#xFF0C;&#x5E42;&#x53D8;&#x6362;+&#x53BB;&#x5468;&#x671F;&#x662F;&#x6548;&#x679C;&#x6700;&#x597D;&#x7684;&#xFF0C;&#x6709;&#x65F6;&#x8FD8;&#x9700;&#x8981;&#x7ED3;&#x5408;&#x53BB;&#x8D8B;&#x52BF;&#x6027;&#x3002;</p>
+<blockquote>
+<p>&#x53C2;&#x8003;sMAPE&#x6307;&#x6807;&#xFF0C;&#x6700;&#x597D;&#x7684;&#x7EC4;&#x5408;&#x662F;7&#x53F7;(Box-Cox&#x5E42;&#x53D8;&#x6362;+&#x53BB;&#x5468;&#x671F;&#x6027;)&#xFF0C;&#x800C;&#x6839;&#x636E;MASE&#x6307;&#x6807;&#xFF0C;&#x6700;&#x597D;&#x7684;&#x7EC4;&#x5408;&#x662F;10&#x53F7;(Box-Cox&#x5E42;&#x53D8;&#x6362;+&#x53BB;&#x5468;&#x671F;&#x6027;+&#x53BB;&#x8D8B;&#x52BF;&#x6027;)&#x3002;</p>
+<p align="right">&#x2014;&#x2014; Statistical and Machine Learning forecasting methods: Concerns and ways forward, 2018.
+</p></blockquote>
+<ul>
+<li>
+<h3>&#x5355;&#x6B65;&#x9884;&#x6D4B;&#x7ED3;&#x679C;</h3>
+</li>
+</ul>
+<p>&#x6240;&#x6709;&#x6A21;&#x578B;&#x90FD;&#x8FDB;&#x884C;&#x4E86;&#x5355;&#x6B65;&#x9884;&#x6D4B;&#x7684;&#x68C0;&#x9A8C;&#xFF0C;&#x68C0;&#x9A8C;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#x5C06;&#x6700;&#x540E;18&#x4E2A;&#x89C2;&#x6D4B;&#x503C;&#x4F5C;&#x4E3A;&#x6D4B;&#x8BD5;&#x6570;&#x636E;&#xFF0C;&#x4F7F;&#x7528;&#x4E4B;&#x524D;&#x7684;&#x89C2;&#x6D4B;&#x771F;&#x503C;&#x8FDB;&#x884C;&#x9884;&#x6D4B;&#xFF0C;&#x7ED3;&#x679C;&#x8868;&#x660E;MLP&#x548C;BNN&#x5728;ML&#x65B9;&#x6CD5;&#x4E2D;&#x6548;&#x679C;&#x6700;&#x597D;&#xFF0C;&#x51FA;&#x4EBA;&#x610F;&#x6599;&#x7684;&#x662F;2&#x4E2A;&#x7ACB;&#x8DB3;&#x4E8E;&#x73B0;&#x4EE3;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x6846;&#x67B6;&#x4E0B;&#x7684;&#x6D89;&#x8BBE;&#x8BA1;RNN&#x548C;LSTM&#x6A21;&#x578B;&#x8868;&#x73B0;&#x7684;&#x7ADF;&#x7136;&#x5F88;&#x7CDF;&#x7CD5;&#x3002;&#x6700;&#x7EC8;&#x5728;&#x6240;&#x6709;&#x7684;&#x65B9;&#x6CD5;&#x91CC;&#xFF0C;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x90FD;&#x8868;&#x73B0;&#x5F97;&#x66F4;&#x597D;&#xFF0C;&#x5176;&#x4E2D;ETS&#x548C;ARIMA&#x7684;&#x8868;&#x73B0;&#x6700;&#x4F73;&#xFF0C;&#x8FD9;&#x4E0E;&#x4E4B;&#x524D;&#x7684;&#x5176;&#x4ED6;&#x4E00;&#x4E9B;&#x7814;&#x7A76;&#x7ED3;&#x679C;&#x543B;&#x5408;&#xFF0C;&#x6700;&#x7EC8;&#x7684;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF1A;<br>
+<img src="assets/markdown-img-paste-20191101172302607.png" alt></p>
+<ul>
+<li>
+<h3>&#x591A;&#x6B65;&#x9884;&#x6D4B;&#x7ED3;&#x679C;</h3>
+</li>
+</ul>
+<p>&#x591A;&#x6B65;&#x9884;&#x6D4B;&#x624D;&#x7528;&#x4E86;3&#x79CD;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<ul>
+<li>&#x8FED;&#x4EE3;&#x9884;&#x62A5;</li>
+<li>&#x76F4;&#x63A5;&#x9884;&#x62A5;</li>
+<li>&#x591A;&#x91CD;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x9884;&#x62A5;</li>
+</ul>
+<p>&#x53E4;&#x5178;&#x65B9;&#x6CD5;&#x518D;&#x6B21;&#x6253;&#x8D25;&#x4E86;ML&#x65B9;&#x6CD5;&#xFF0C;&#x8FD9;&#x6B21;&#x8868;&#x73B0;&#x7684;&#x6700;&#x597D;&#x7684;&#x662F;Theta&#xFF0C;ARIMA&#x548C;Comb(&#x4E00;&#x4E2A;&#x6307;&#x6570;&#x5E73;&#x6ED1;&#x7684;&#x7EC4;&#x5408;)&#x3002;</p>
+<ul>
+<li>
+<h3>&#x7ED3;&#x8BED;</h3>
+</li>
+</ul>
+<p>&#x8BE5;&#x7814;&#x7A76;&#x8868;&#x660E;&#x4E86;&#x5728;&#x5355;&#x53D8;&#x91CF;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x4E0A;&#xFF0C;&#x4E0D;&#x8BBA;&#x662F;&#x5355;&#x6B65;&#x9884;&#x6D4B;&#x8FD8;&#x662F;&#x591A;&#x6B65;&#x9884;&#x6D4B;&#xFF0C;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x5747;&#x5177;&#x6709;&#x4E00;&#x5B9A;&#x4F18;&#x52BF;&#x3002;ML&#x7B97;&#x6CD5;&#x4E0D;&#x4EC5;&#x8868;&#x73B0;&#x66F4;&#x5DEE;&#xFF0C;&#x8BA1;&#x7B97;&#x4E5F;&#x66F4;&#x8017;&#x65F6;&#x3002;&#x8FD9;&#x4E00;&#x7814;&#x7A76;&#x7ED3;&#x679C;&#x662F;&#x8BA9;&#x6211;&#x4EEC;&#x91CD;&#x65B0;&#x5BA1;&#x89C6;&#x4E86;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x7684;&#x4EF7;&#x503C;&#xFF0C;&#x81F3;&#x5C11;&#x5E94;&#x8BE5;&#x628A;&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x5F53;&#x505A;ML&#x7B97;&#x6CD5;&#x7684;&#x6D4B;&#x8BD5;&#x57FA;&#x51C6;&#x3002;&#x6587;&#x7AE0;&#x540C;&#x65F6;&#x8FD8;&#x8868;&#x8FBE;&#x4E86;&#x6570;&#x636E;&#x9884;&#x5904;&#x7406;&#x7684;&#x91CD;&#x8981;&#x6027;&#x3002;</p>
+<p>&#x4F46;&#x8BE5;&#x7814;&#x7A76;&#x6CA1;&#x6709;&#x8003;&#x8651;&#x5230;&#x7684;&#x60C5;&#x51B5;&#x5305;&#x62EC;&#xFF1A;</p>
+<ul>
+<li>&#x590D;&#x6742;&#x7684;&#x4E0D;&#x89C4;&#x5219;&#x65F6;&#x95F4;&#x7ED3;&#x6784;</li>
+<li>&#x89C2;&#x6D4B;&#x503C;&#x7F3A;&#x5931;</li>
+<li>&#x5F3A;&#x566A;&#x58F0;</li>
+<li>&#x76F8;&#x4E92;&#x4E4B;&#x95F4;&#x8054;&#x7CFB;&#x590D;&#x6742;&#x7684;&#x591A;&#x53D8;&#x91CF;&#x95EE;&#x9898;</li>
+</ul>
+<p>&#x8FD9;&#x4E00;&#x7814;&#x7A76;&#x63D0;&#x51FA;&#x65E2;&#x7136;ML&#x7B97;&#x6CD5;&#x5728;&#x5176;&#x4ED6;AI&#x9886;&#x57DF;&#x90FD;&#x8868;&#x73B0;&#x4F18;&#x5F02;&#xFF0C;&#x6CA1;&#x6709;&#x7406;&#x7531;&#x5728;&#x5355;&#x53D8;&#x91CF;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x4E0A;&#x8868;&#x73B0;&#x8FD9;&#x4E48;&#x5DEE;&#xFF0C;&#x7B97;&#x662F;&#x5BF9;ML&#x4ECE;&#x4E1A;&#x4EBA;&#x5458;&#x63D0;&#x51FA;&#x4E86;&#x5C0F;&#x7591;&#x95EE;&#x3002;&#x4F5C;&#x8005;&#x8FD8;&#x70B9;&#x8BC4;&#x4E86;LSTM&#x548C;RNN&#xFF0C;&#x8FD9;&#x4E24;&#x4E2A;&#x65B9;&#x6CD5;&#x662F;&#x7ECF;&#x5E38;&#x88AB;&#x7528;&#x4E8E;&#x65F6;&#x5E8F;&#x9884;&#x6D4B;&#x95EE;&#x9898;&#x7684;&#x6DF1;&#x5EA6;&#x5B66;&#x4E60;&#x65B9;&#x6CD5;&#xFF0C;&#x4F46;&#x5728;&#x672C;&#x7814;&#x7A76;&#x4E2D;&#xFF0C;&#x5B83;&#x4EEC;&#x7684;&#x8868;&#x73B0;&#x5F88;&#x5DEE;&#x3002;&#x8868;&#x73B0;&#x51FA;&#x4E86;&#x8FC7;&#x62DF;&#x5408;&#x7684;&#x7279;&#x6027;&#x3002;</p>
+<ul>
+<li>
+<h3>&#x62D3;&#x5C55;&#x9605;&#x8BFB;</h3>
+</li>
+</ul>
+<p>&#x53E4;&#x5178;&#x7B97;&#x6CD5;&#x6DF1;&#x5165;&#x9605;&#x8BFB;&#xFF1A;</p>
+<ol>
+<li><a href="https://otexts.com/fpp2/simple-methods.html">Naive</a></li>
+<li><a href="https://otexts.com/fpp2/ses.html">SES</a></li>
+<li><a href="https://otexts.com/fpp2/holt.html">Holt</a></li>
+<li><a href="https://otexts.com/fpp2/arima.html">ARIMA</a></li>
+<li><a href="https://otexts.com/fpp2/ets.html">ETS</a></li>
+<li><a href="https://otexts.com/fpp2/arima-ets.html">ARIMA VS ETS</a></li>
+</ol>
+<p>M4&#x6BD4;&#x8D5B;&#xFF1A;</p>
+<ol>
+<li><a href="https://www.sciencedirect.com/science/article/pii/S0169207018300785">The M4 Competition: Results, findings, conclusion and way forward, 2018</a></li>
+</ol>
+<p><br><br><br><br></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0194889">Statistical and Machinme Learning forecasting methods: Concerns and ways forward</a> <a href="#fnref1" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref1:1" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref1:2" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref1:3" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref1:4" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://www.sciencedirect.com/science/article/pii/S0169207000000571">The M3-Competition: Results, Conclusions and Implications</a> <a href="#fnref2" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref2:1" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref2:2" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="https://www.tandfonline.com/doi/abs/10.1080/07474938.2010.481556">An Empirical Comparison of Machine Learning Models for Time Series Forecasting</a> <a href="#fnref3" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref3:1" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref3:2" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="https://en.wikipedia.org/wiki/Makridakis_Competitions">Makridakis Competitions, Wikipedia</a> <a href="#fnref4" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+</li>
+</ol>
+</section>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
